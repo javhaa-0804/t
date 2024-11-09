@@ -1,0 +1,24 @@
+
+Site bolon Optic cable gemtsen tohioldolt daraah baidlaar tech_alert uusgene.
+
+Mon
+Гарчиг: DB_building болон AoS хоорондох холболт унасан.
+BD_building болон AoS хоорондох холболт унасан. TND инженерт мэдэгдсэн.
+DB_building caйтаас AoS caйт хоорондох холболт тасарсан байна. TND Инженерүүд очиж шалгахаар боллоо.
+TND engineers шилэн кабелийн тасарсан цэгийг олхийн тулд db_building сайтаас хэмжилт хийж байна.
+Манай 96 core-Н шилэн кабелийг зам засварын ажил хийгдэж байгаад гэмтээсэн байна. db_building-с 3,9 km зайнд шилэн кабель тасалсан байна.
+Инженерүүд асуудал дээр ажиллаж байна. Асуудлыг шийдвэрлэхэд хугацаа ихээр шаардагдхаар байна.
+АоS болон DB_Building сайтуудын хоорондох холболт сэргэсэн боловч зарим IPRAN тоног төхөөрөмжүүд унасан хэвээр байна. Шилэн кабелийг залгааг холбох ажил үргэлжилж байна
+HBB (Өрхийн интенертийн) үйлчилгээг эхний ээлжинд оруулсан.
+16hor_Comfort үйлчилгээнүүд шилэн кабелийн залгаж холбосны дараа сэргэсэн
+
+Eng
+Title: "Connection Issue Between DB_Building and AoS", "DB_Building to AoS Link Down", "Connectivity Problem Between DB_Building and AoS Site"
+The connection between DB_Building and AoS has gone down. The TND engineer has been notified.
+The connection between the DB_Building site and the AoS site has been interrupted. TND engineers will go on-site to investigate.
+The TND engineers are performing measurements from the DB_Building site to locate the break point in the fiber optic cable.
+Our 96-core fiber optic cable was damaged during road maintenance work. The fiber optic cable was cut 3.9 km from DB_Building.
+Engineers are still working on the issue, and it will take some time to resolve.
+The link between the AoS and DB_Building sites is up, but some IPRAN equipment remains down. Splicing is ongoing
+HBB services have been partially recovered
+16hor_Comfort services have been recovered after splicing the cores.
