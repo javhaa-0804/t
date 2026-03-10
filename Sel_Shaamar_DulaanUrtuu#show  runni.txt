@@ -1,0 +1,356 @@
+Sel_Shaamar_DulaanUrtuu#show  running-config 
+Building configuration...
+
+
+Current configuration : 10374 bytes
+!
+! Last configuration change at 13:55:08 MNT Wed Feb 4 2026 by temuulen
+! NVRAM config last updated at 13:56:43 MNT Wed Feb 4 2026 by temuulen
+!
+version 16.9
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service call-home
+platform qfp utilization monitor load 80
+platform punt-keepalive disable-kernel-core
+platform hardware throughput crypto 50000
+!
+hostname Sel_Shaamar_DulaanUrtuu
+!
+boot-start-marker
+boot system flash bootflash:c1100-universalk9_ias.16.09.08.SPA.bin
+boot-end-marker
+!
+!
+!
+aaa new-model
+!
+!
+aaa authentication login default group tacacs+ local enable
+aaa authorization config-commands
+aaa authorization exec default group tacacs+ local 
+aaa authorization commands 1 default group tacacs+ local 
+aaa authorization commands 6 default group tacacs+ local 
+aaa authorization commands 7 default group tacacs+ local 
+aaa authorization commands 15 default group tacacs+ local 
+aaa accounting exec default start-stop group tacacs+
+aaa accounting commands 1 default start-stop group tacacs+
+aaa accounting commands 6 default start-stop group tacacs+
+aaa accounting commands 7 default start-stop group tacacs+
+aaa accounting commands 14 default start-stop group tacacs+
+aaa accounting commands 15 default start-stop group tacacs+
+aaa accounting connection default start-stop group tacacs+
+aaa accounting system default start-stop group tacacs+
+!
+!
+!
+!
+!
+!
+aaa session-id common
+clock timezone MNT 8 0
+call-home
+ ! If contact email address in call-home is configured as sch-smart-licensing@cisco.com
+ ! the email address configured in Cisco Smart License Portal will be used as contact email address to send SCH notifications.
+ contact-email-addr sch-smart-licensing@cisco.com
+ profile "CiscoTAC-1"
+  active
+  destination transport-method http
+  no destination transport-method email
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name mobicom.mn
+!
+!
+!
+no ip igmp snooping
+login on-success log
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-3529045907
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-3529045907
+ revocation-check none
+ rsakeypair TP-self-signed-3529045907
+!
+crypto pki trustpoint SLA-TrustPoint
+ enrollment pkcs12
+ revocation-check crl
+!
+!
+crypto pki certificate chain TP-self-signed-3529045907
+ certificate self-signed 01
+  30820330 30820218 A0030201 02020101 300D0609 2A864886 F70D0101 05050030 
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 33353239 30343539 3037301E 170D3235 30363235 31323534 
+  32335A17 0D333530 36323531 32353432 335A3031 312F302D 06035504 03132649 
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D33 35323930 
+  34353930 37308201 22300D06 092A8648 86F70D01 01010500 0382010F 00308201 
+  0A028201 0100AB69 4731BC7D 8D794EFD 904FB3C8 ADFECF91 47E51817 00464918 
+  FC2019BA EB9C7A0A 1453A64A 3A4E1C44 B13A835A 46F58F46 3F81745E 18209B3B 
+  65AD7615 280AAF32 42D4B188 DC1B4265 66A35C58 95630EDC 2985E9D1 1CE75260 
+  F807DD90 1F36D0A9 304E21EA 7E24C960 67EC66F1 85668BC9 550DE6B9 98ECF88E 
+  4E12B48C F2599BAF 70444598 EBD0CD8B A9797C6F 556BC86E F286FE92 65E39E6E 
+  400AAFEA 2D68C0A3 12533FDB B0FD43D8 8B072BD8 95F57F7E 38875FEA 1FBBE4F0 
+  1B09DED3 FFB0E004 79182542 8AA06EAF 5D949B2A 8EAE5646 04F0329E D1AD01D6 
+  EF2327A9 A1FF16FB 825FB2FE A277D576 459D1DB3 CB501BC9 3A53DA4E 9ED670F1 
+  A44DB93E 60450203 010001A3 53305130 0F060355 1D130101 FF040530 030101FF 
+  301F0603 551D2304 18301680 1443610A 6BFFDFA4 6D74DCC7 76E976F4 C0E31000 
+  39301D06 03551D0E 04160414 43610A6B FFDFA46D 74DCC776 E976F4C0 E3100039 
+  300D0609 2A864886 F70D0101 05050003 82010100 0344E89D 2D80175C 4B325DF5 
+  7DBF1C7C A84DB46E EFB88586 90078F04 916A81A4 76E3F80E 44C35228 4F0CF56B 
+  22217BDC 52FF6324 6D55FA6B 8062D54B 0CFBD104 7C7B64E7 E2A73FBA 4C261F99 
+  76B8009B DC116638 F9E78E8F 82024F99 D207961B 2E83B320 FBA3D4E3 E2909A57 
+  F30A71D3 D4C23E82 8FAD9492 403B27CB F158A73D E5411DCB 144B56F5 23259272 
+  C4300402 0FE5EDCC D546A05D CE3F193D CC3C2F5F F2FAF3E4 C1A49097 18FC78AD 
+  E1555AB2 E7AE95EE ABEA0825 1ED03506 CBD00004 3557CCF7 81C6CB0A 261E19A0 
+  F7597D33 4054682A 254FD71F FBAAA007 0B780ECB 7CC78765 C9BFBD25 6CD00208 
+  1F69F948 683CDCFD 93D5658B DFBDBCEB 5DCC89B5
+        quit
+crypto pki certificate chain SLA-TrustPoint
+ certificate ca 01
+  30820321 30820209 A0030201 02020101 300D0609 2A864886 F70D0101 0B050030 
+  32310E30 0C060355 040A1305 43697363 6F312030 1E060355 04031317 43697363 
+  6F204C69 63656E73 696E6720 526F6F74 20434130 1E170D31 33303533 30313934 
+  3834375A 170D3338 30353330 31393438 34375A30 32310E30 0C060355 040A1305 
+  43697363 6F312030 1E060355 04031317 43697363 6F204C69 63656E73 696E6720 
+  526F6F74 20434130 82012230 0D06092A 864886F7 0D010101 05000382 010F0030 
+  82010A02 82010100 A6BCBD96 131E05F7 145EA72C 2CD686E6 17222EA1 F1EFF64D 
+  CBB4C798 212AA147 C655D8D7 9471380D 8711441E 1AAF071A 9CAE6388 8A38E520 
+  1C394D78 462EF239 C659F715 B98C0A59 5BBB5CBD 0CFEBEA3 700A8BF7 D8F256EE 
+  4AA4E80D DB6FD1C9 60B1FD18 FFC69C96 6FA68957 A2617DE7 104FDC5F EA2956AC 
+  7390A3EB 2B5436AD C847A2C5 DAB553EB 69A9A535 58E9F3E3 C0BD23CF 58BD7188 
+  68E69491 20F320E7 948E71D7 AE3BCC84 F10684C7 4BC8E00F 539BA42B 42C68BB7 
+  C7479096 B4CB2D62 EA2F505D C7B062A4 6811D95B E8250FC4 5D5D5FB8 8F27D191 
+  C55F0D76 61F9A4CD 3D992327 A8BB03BD 4E6D7069 7CBADF8B DF5F4368 95135E44 
+  DFC7C6CF 04DD7FD1 02030100 01A34230 40300E06 03551D0F 0101FF04 04030201 
+  06300F06 03551D13 0101FF04 05300301 01FF301D 0603551D 0E041604 1449DC85 
+  4B3D31E5 1B3E6A17 606AF333 3D3B4C73 E8300D06 092A8648 86F70D01 010B0500 
+  03820101 00507F24 D3932A66 86025D9F E838AE5C 6D4DF6B0 49631C78 240DA905 
+  604EDCDE FF4FED2B 77FC460E CD636FDB DD44681E 3A5673AB 9093D3B1 6C9E3D8B 
+  D98987BF E40CBD9E 1AECA0C2 2189BB5C 8FA85686 CD98B646 5575B146 8DFC66A8 
+  467A3DF4 4D565700 6ADF0F0D CF835015 3C04FF7C 21E878AC 11BA9CD2 55A9232C 
+  7CA7B7E6 C1AF74F6 152E99B7 B1FCF9BB E973DE7F 5BDDEB86 C71E3B49 1765308B 
+  5FB0DA06 B92AFE7F 494E8A9E 07B85737 F3A58BE1 1A48A229 C37C1E69 39F08678 
+  80DDCD16 D6BACECA EEBC7CF9 8428787B 35202CDC 60E4616A B623CDBD 230E3AFB 
+  418616A9 4093E049 4D10AB75 27E86F73 932E35B5 8862FDAE 0275156F 719BB2F0 
+  D697DF7F 28
+        quit
+!
+license udi pid C1111-4P sn FGL2544LTBC
+license boot level appxk9
+license boot level securityk9
+no license smart enable
+memory free low-watermark processor 70188
+!
+diagnostic bootup level minimal
+!
+spanning-tree extend system-id
+!
+!
+username mobicom privilege 15 password 0 mobicom
+!
+redundancy
+ mode none
+!
+!
+!
+!
+!
+vlan internal allocation policy ascending
+!
+!
+! 
+!
+!
+!
+!
+crypto isakmp policy 1
+ encr 3des
+ hash md5
+ authentication pre-share
+ group 2
+crypto isakmp key Starlink-Mobicom address 103.29.145.82  
+!
+!
+crypto ipsec transform-set TS esp-3des esp-md5-hmac 
+ mode transport
+!
+!
+crypto ipsec profile protect-gre
+ set security-association lifetime seconds 86400
+ set transform-set TS 
+!
+!
+bridge irb
+!
+!
+!
+! 
+!         
+!
+!
+interface Loopback0
+ ip address 10.4.14.17 255.255.255.255
+!
+interface Tunnel2
+ ip address 172.16.1.17 255.255.255.0
+ ip mtu 1400
+ ip nhrp authentication MobiCom
+ ip nhrp map 172.16.1.1 103.29.145.82
+ ip nhrp map multicast 103.29.145.82
+ ip nhrp network-id 1
+ ip nhrp nhs 172.16.1.1
+ ip tcp adjust-mss 1360
+ tunnel source GigabitEthernet0/0/0
+ tunnel destination 103.29.145.82
+ tunnel protection ipsec profile protect-gre
+!
+interface GigabitEthernet0/0/0
+ description Internet_Starlink
+ ip address dhcp
+ load-interval 30
+ negotiation auto
+!
+interface GigabitEthernet0/0/1
+ description to BBU
+ no ip address
+ load-interval 30
+ negotiation auto
+!
+interface GigabitEthernet0/0/1.58
+ description 2G-traffic
+ encapsulation dot1Q 58
+ ip address 10.6.241.121 255.255.255.248
+!
+interface GigabitEthernet0/0/1.968
+ description LTE Traffic
+ encapsulation dot1Q 968
+ ip address 10.4.241.121 255.255.255.248
+!
+interface GigabitEthernet0/0/1.969
+ description OAM
+ encapsulation dot1Q 969
+ ip address 10.1.241.121 255.255.255.248
+!
+interface GigabitEthernet0/1/0
+ description USMS
+ switchport access vlan 996
+ switchport mode access
+!
+interface GigabitEthernet0/1/1
+!         
+interface GigabitEthernet0/1/2
+!
+interface GigabitEthernet0/1/3
+!
+interface Vlan1
+ no ip address
+!
+interface Vlan996
+ description USMS
+ ip address 10.63.20.249 255.255.255.248
+!
+ip forward-protocol nd
+ip telnet source-interface Loopback0
+ip ftp source-interface Loopback0
+no ip http server
+ip http authentication local
+no ip http secure-server
+ip route 10.0.9.0 255.255.255.0 172.16.1.1 name management
+ip route 10.6.240.0 255.255.255.248 172.16.1.1
+ip route 10.60.32.0 255.255.255.0 172.16.1.1 name USMS
+ip route 10.92.2.0 255.255.255.0 172.16.1.1
+ip route 10.100.89.0 255.255.255.240 172.16.1.1
+ip route 10.100.91.32 255.255.255.240 172.16.1.1
+ip route 10.180.23.0 255.255.255.0 172.16.1.1 name for_LTE
+ip route 10.180.24.0 255.255.255.0 172.16.1.1 name for_LTE
+ip route 10.190.23.0 255.255.255.0 172.16.1.1 name for_LTE
+ip route 10.190.24.0 255.255.255.0 172.16.1.1 name for_LTE
+ip route 172.27.53.0 255.255.255.0 172.16.1.1 name USMS
+ip route 192.168.242.0 255.255.255.0 172.16.1.1 name MANAGEMENT_PE-CORE
+ip route 192.168.244.0 255.255.255.0 172.16.1.1 name PAM_PE-CORE
+ip ssh version 2
+!
+!
+ip access-list standard SNMP-Access
+ permit 10.10.20.2
+ permit 10.0.9.108
+ permit 10.50.50.199
+ permit 192.168.242.0 0.0.0.255
+ remark MobiCom-Zone
+ permit 27.123.215.64 0.0.0.63
+ deny   any
+ip access-list standard VTY-Access
+ permit 172.16.1.0 0.0.0.255
+ permit 10.0.9.0 0.0.0.255
+ permit 172.30.14.0 0.0.0.255
+ permit 172.30.21.0 0.0.0.255
+ permit 192.168.242.0 0.0.0.255
+ permit 192.168.244.0 0.0.0.255
+ permit 10.32.110.0 0.0.0.255
+ permit 10.44.0.0 0.0.255.255
+ permit 10.32.0.0 0.0.255.255
+ permit 27.123.215.0 0.0.0.255
+ permit 10.10.20.0 0.0.0.255
+ permit 103.29.145.80 0.0.0.7
+ deny   any
+!
+logging host 27.123.215.85
+!
+!
+snmp-server community AHXAAP RO SNMP-Access
+snmp-server location MobiCom Corporation Technical Building, Ulaanbaatar, Mongolia
+!
+tacacs-server host 27.123.215.100
+tacacs-server host 192.168.242.17
+tacacs-server key M^&Naaa$R
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ transport input all
+ transport output all
+ stopbits 1
+line vty 0 4
+ access-class VTY-Access in
+ transport input all
+ transport output all
+line vty 5 15
+ transport input none
+ transport output none
+!
+ntp server 172.16.1.1
+!
+!
+!
+!
+!
+end
+
+Sel_Shaamar_DulaanUrtuu# 
