@@ -1,0 +1,246 @@
+SUH_Dariganga_ShiliinBogd_Skytel#sho running-config
+Building configuration...
+
+
+Current configuration : 4625 bytes
+!
+! Last configuration change at 07:29:24 UTC Sat Sep 10 2005
+!
+version 16.9
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+platform punt-keepalive disable-kernel-core
+platform hardware throughput crypto 50000
+!
+hostname SUH_Dariganga_ShiliinBogd_Skytel
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name mobicom.mn
+!
+!
+!
+login on-success log
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+!
+!
+!
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+license udi pid C1111-4P sn FGL2504LCUX
+license boot level appxk9
+license boot level securityk9
+no license smart enable
+!
+diagnostic bootup level minimal
+!
+spanning-tree extend system-id
+!
+!
+username mobicom privilege 15 password 0 mobicom
+!
+redundancy
+ mode none
+!
+!
+!
+!
+!
+vlan internal allocation policy ascending
+!
+!
+!
+!
+!
+!
+!
+crypto isakmp policy 1
+ encr 3des
+ hash md5
+ authentication pre-share
+ group 2
+crypto isakmp key Starlink-Mobicom address 103.29.145.82
+!
+!
+crypto ipsec transform-set TS esp-3des esp-md5-hmac
+ mode transport
+!
+!
+crypto ipsec profile protect-gre
+ set security-association lifetime seconds 86400
+ set transform-set TS
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 10.4.14.18 255.255.255.255
+!
+interface Tunnel2
+ ip address 172.16.1.18 255.255.255.0
+ ip mtu 1400
+ ip nhrp authentication MobiCom
+ ip nhrp map 172.16.1.1 103.29.145.82
+ ip nhrp map multicast 103.29.145.82
+ ip nhrp network-id 1
+ ip nhrp nhs 172.16.1.1
+ ip tcp adjust-mss 1360
+ tunnel source GigabitEthernet0/0/0
+ tunnel destination 103.29.145.82
+ tunnel protection ipsec profile protect-gre
+!
+interface GigabitEthernet0/0/0
+ description Internet_Starlink
+ ip address dhcp
+ load-interval 30
+ negotiation auto
+!
+interface GigabitEthernet0/0/1
+ description to BBU
+ no ip address
+ load-interval 30
+ negotiation auto
+!
+interface GigabitEthernet0/0/1.58
+ description 2G-traffic
+ encapsulation dot1Q 58
+ ip address 10.6.241.129 255.255.255.248
+!
+interface GigabitEthernet0/0/1.968
+ description LTE Traffic
+ encapsulation dot1Q 968
+ ip address 10.4.241.129 255.255.255.248
+!
+interface GigabitEthernet0/0/1.969
+ description OAM
+ encapsulation dot1Q 969
+ ip address 10.1.241.129 255.255.255.248
+!
+interface GigabitEthernet0/1/0
+ description USMS
+ switchport access vlan 996
+ switchport mode access
+!
+interface GigabitEthernet0/1/1
+!
+interface GigabitEthernet0/1/2
+!
+interface GigabitEthernet0/1/3
+!
+interface Vlan1
+ no ip address
+!
+interface Vlan996
+ description USMS
+ ip address 10.63.20.131 255.255.255.248
+!
+ip forward-protocol nd
+ip telnet source-interface Loopback0
+ip ftp source-interface Loopback0
+no ip http server
+ip http authentication local
+no ip http secure-server
+ip route 10.0.9.0 255.255.255.0 172.16.1.1 name management
+ip route 10.6.240.0 255.255.255.248 172.16.1.1
+ip route 10.60.32.0 255.255.255.0 172.16.1.1 name USMS
+ip route 10.92.2.0 255.255.255.0 172.16.1.1
+ip route 10.100.89.0 255.255.255.240 172.16.1.1
+ip route 10.100.91.32 255.255.255.240 172.16.1.1
+ip route 10.180.23.0 255.255.255.0 172.16.1.1 name for_LTE
+ip route 10.180.24.0 255.255.255.0 172.16.1.1 name for_LTE
+ip route 10.190.23.0 255.255.255.0 172.16.1.1 name for_LTE
+ip route 10.190.24.0 255.255.255.0 172.16.1.1 name for_LTE
+ip route 172.27.53.0 255.255.255.0 172.16.1.1 name USMS
+ip route 192.168.242.0 255.255.255.0 172.16.1.1 name MANAGEMENT_PE-CORE
+ip route 192.168.244.0 255.255.255.0 172.16.1.1 name PAM_PE-CORE
+ip ssh version 2
+!
+!
+ip access-list standard SNMP-Access
+ permit 10.10.20.2
+ permit 10.0.9.108
+ permit 10.50.50.199
+ permit 192.168.242.0 0.0.0.255
+ remark MobiCom-Zone
+ permit 27.123.215.64 0.0.0.63
+ deny   any
+ip access-list standard VTY-Access
+ permit 172.16.1.0 0.0.0.255
+ permit 10.0.9.0 0.0.0.255
+ permit 172.30.14.0 0.0.0.255
+ permit 172.30.21.0 0.0.0.255
+ permit 192.168.242.0 0.0.0.255
+ permit 192.168.244.0 0.0.0.255
+ permit 10.32.110.0 0.0.0.255
+ permit 10.44.0.0 0.0.255.255
+ permit 10.32.0.0 0.0.255.255
+ permit 27.123.215.0 0.0.0.255
+ permit 10.10.20.0 0.0.0.255
+ permit 103.29.145.80 0.0.0.7
+ deny   any
+!
+logging host 27.123.215.85
+!
+!
+snmp-server community AHXAAP RO SNMP-Access
+snmp-server location MobiCom Corporation Technical Building, Ulaanbaatar, Mongolia
+!
+tacacs-server host 27.123.215.100
+tacacs-server host 192.168.242.17
+tacacs-server key M^&Naaa$R
+!
+control-plane
+!
+!
+line con 0
+ transport input all
+ transport output all
+ stopbits 1
+line vty 0 4
+ access-class VTY-Access in
+ login
+ transport input all
+ transport output all
+line vty 5 15
+ login
+ transport input none
+ transport output none
+!
+ntp server 172.16.1.1
+!
+!
+!
+!
+!
+end
