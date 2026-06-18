@@ -1,0 +1,299 @@
+Router10#show  running-config 
+Building configuration...
+
+Current configuration : 6948 bytes
+!
+! Last configuration change at 04:02:34 UTC Tue Sep 30 2025 by isplab
+!
+version 15.9
+service timestamps debug datetime msec localtime show-timezone year
+service timestamps log datetime msec localtime show-timezone year
+service password-encryption
+!
+hostname Router10
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no logging console
+enable secret 9 $9$AXqljKSDL8scBf$nMgHnc0uuCV3gci7HbRKywQTRs/9TCRLxeK.UDdGcsg
+!
+aaa new-model
+!
+!
+aaa authentication login default local
+aaa authentication enable default enable
+!
+!
+!
+!
+!
+aaa session-id common
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+no ip source-route
+!
+!
+!
+!         
+!
+!
+no ip domain lookup
+ip domain name ws.nsrc.org
+ip cef
+no ipv6 source-route
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+key chain isis-key
+ key 1
+  key-string 7 08285F5E051807
+!
+!
+username isplab secret 9 $9$7/Sa9abLr32fVf$0XESGaNa2MraP.Xzaok.vcK3YM7xG226uPaRwJ1xjkM
+!
+redundancy
+!         
+!
+ip tcp path-mtu-discovery
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback on Router10
+ ip address 100.68.15.250 255.255.255.255
+ ipv6 address 2001:DB8:0:FFFF::A/128
+!
+interface Null0
+ no ip unreachables
+ no ipv6 unreachables
+!
+interface GigabitEthernet0/0
+ description P2P Ethernet Link to Router9
+ ip address 100.68.15.21 255.255.255.254
+ no ip redirects
+ no ip proxy-arp
+ ip router isis workshop
+ load-interval 30
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address 2001:DB8:0:B::1/127
+ ipv6 nd prefix default no-advertise
+ ipv6 nd ra suppress all
+ ipv6 router isis workshop
+ isis network point-to-point 
+ isis metric 2
+ isis ipv6 metric 2
+!
+interface GigabitEthernet0/1
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description P2P Ethernet Link to Router12
+ ip address 100.68.15.24 255.255.255.254
+ no ip redirects
+ no ip proxy-arp
+ ip router isis workshop
+ load-interval 30
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address 2001:DB8:0:D::/127
+ ipv6 nd prefix default no-advertise
+ ipv6 nd ra suppress all
+ ipv6 router isis workshop
+ isis network point-to-point 
+ isis metric 2
+ isis ipv6 metric 2
+!
+interface GigabitEthernet0/3
+ description P2P Ethernet Link to Router8
+ ip address 100.68.15.19 255.255.255.254
+ no ip redirects
+ no ip proxy-arp
+ ip router isis workshop
+ load-interval 30
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address 2001:DB8:0:A::1/127
+ ipv6 nd prefix default no-advertise
+ ipv6 nd ra suppress all
+ ipv6 router isis workshop
+ isis network point-to-point 
+ isis metric 2
+ isis ipv6 metric 2
+!
+router isis workshop
+ net 49.0001.0000.0010.00
+ is-type level-2-only
+ authentication mode md5 level-2
+ authentication key-chain isis-key level-2
+ metric-style wide
+ set-overload-bit on-startup wait-for-bgp
+ log-adjacency-changes
+ metric 100000
+ passive-interface Loopback0
+ !
+ address-family ipv6
+  multi-topology
+  set-overload-bit on-startup wait-for-bgp
+  metric 100000
+ exit-address-family
+!
+router bgp 64500
+ bgp log-neighbor-changes
+ bgp deterministic-med
+ no bgp default ipv4-unicast
+ neighbor core-v4ibgp peer-group
+ neighbor core-v4ibgp remote-as 64500
+ neighbor core-v4ibgp description IBGP for Core mesh
+ neighbor core-v4ibgp password 7 112B3E355A223C
+ neighbor core-v4ibgp update-source Loopback0
+ neighbor core-v6ibgp peer-group
+ neighbor core-v6ibgp remote-as 64500
+ neighbor core-v6ibgp description IBGP for Core mesh
+ neighbor core-v6ibgp password 7 00263436496B3C
+ neighbor core-v6ibgp update-source Loopback0
+ neighbor rr-v4client peer-group
+ neighbor rr-v4client remote-as 64500
+ neighbor rr-v4client description IBGP with RR Client
+ neighbor rr-v4client password 7 0529213F6C7C79
+ neighbor rr-v4client update-source Loopback0
+ neighbor rr-v6client peer-group
+ neighbor rr-v6client remote-as 64500
+ neighbor rr-v6client description IBGP with RR Client
+ neighbor rr-v6client password 7 0224236B463638
+ neighbor rr-v6client update-source Loopback0
+ neighbor 2001:DB8:0:FFFF::5 peer-group core-v6ibgp
+ neighbor 2001:DB8:0:FFFF::5 description IBGP with Router5
+ neighbor 2001:DB8:0:FFFF::6 peer-group core-v6ibgp
+ neighbor 2001:DB8:0:FFFF::6 description IBGP with Router6
+ neighbor 2001:DB8:0:FFFF::7 peer-group core-v6ibgp
+ neighbor 2001:DB8:0:FFFF::7 description IBGP with Router7
+ neighbor 2001:DB8:0:FFFF::8 peer-group core-v6ibgp
+ neighbor 2001:DB8:0:FFFF::8 description IBGP with Router8
+ neighbor 2001:DB8:0:FFFF::9 peer-group core-v6ibgp
+ neighbor 2001:DB8:0:FFFF::9 description IBGP with Router9
+ neighbor 2001:DB8:0:FFFF::C peer-group rr-v6client
+ neighbor 2001:DB8:0:FFFF::C description IBGP with Client12
+ neighbor 2001:DB8:0:FFFF::E peer-group rr-v6client
+ neighbor 2001:DB8:0:FFFF::E description IBGP with Client12
+ neighbor 100.68.15.245 peer-group core-v4ibgp
+ neighbor 100.68.15.245 description IBGP with Router5
+ neighbor 100.68.15.246 peer-group core-v4ibgp
+ neighbor 100.68.15.246 description IBGP with Router6
+ neighbor 100.68.15.247 peer-group core-v4ibgp
+ neighbor 100.68.15.247 description IBGP with Router7
+ neighbor 100.68.15.248 peer-group core-v4ibgp
+ neighbor 100.68.15.248 description IBGP with Router8
+ neighbor 100.68.15.249 peer-group core-v4ibgp
+ neighbor 100.68.15.249 description IBGP with Router9
+ neighbor 100.68.15.252 peer-group rr-v4client
+ neighbor 100.68.15.252 description IBGP with Client12
+ neighbor 100.68.15.254 peer-group rr-v4client
+ neighbor 100.68.15.254 description IBGP with Client12
+ !
+ address-family ipv4
+  network 100.68.0.0 mask 255.255.240.0
+  network 100.68.2.64 mask 255.255.255.192
+  neighbor rr-v4client route-reflector-client
+  neighbor 100.68.15.245 activate
+  neighbor 100.68.15.246 activate
+  neighbor 100.68.15.247 activate
+  neighbor 100.68.15.248 activate
+  neighbor 100.68.15.249 activate
+  neighbor 100.68.15.252 activate
+  neighbor 100.68.15.254 activate
+  distance bgp 200 200 200
+ exit-address-family
+ !
+ address-family ipv6
+  distance bgp 200 200 200
+  network 2001:DB8::/32
+  network 2001:DB8:A::/48
+  neighbor rr-v6client route-reflector-client
+  neighbor 2001:DB8:0:FFFF::5 activate
+  neighbor 2001:DB8:0:FFFF::6 activate
+  neighbor 2001:DB8:0:FFFF::7 activate
+  neighbor 2001:DB8:0:FFFF::8 activate
+  neighbor 2001:DB8:0:FFFF::9 activate
+  neighbor 2001:DB8:0:FFFF::C activate
+  neighbor 2001:DB8:0:FFFF::E activate
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 100.68.2.64 255.255.255.192 Null0
+ip ssh version 2
+!
+ipv6 route 2001:DB8:A::/48 Null0
+ipv6 ioam timestamp
+!
+!
+!
+!
+!
+control-plane
+!
+banner exec ^C
+^C
+banner incoming ^C
+^C
+banner login ^C
+           BGP Deployment Workshop Lab
+         Network Startup Resource Center
+^C
+!
+line con 0
+ exec-timeout 30 0
+ transport preferred none
+ escape-character 3
+line aux 0
+ exec-timeout 30 0
+ transport preferred none
+ escape-character 3
+line vty 0 4
+ exec-timeout 30 0
+ transport preferred none
+ transport input ssh
+ escape-character 3
+!
+no scheduler allocate
+!
+end
+
+Router10#
