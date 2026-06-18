@@ -1,0 +1,281 @@
+Router10#sho running-config 
+Building configuration...
+
+Current configuration : 6125 bytes
+!
+! Last configuration change at 04:36:23 UTC Wed Oct 1 2025 by isplab
+!
+version 15.9
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname Router10
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no logging console
+enable secret 9 $9$b9VRGkWz87itsf$nCU89pSNeJJ5srgokId7HqasvTE9wdl2cGL854XqPug
+!
+aaa new-model
+!
+!
+aaa authentication login default local
+aaa authentication enable default enable
+!
+!
+!
+!
+!
+aaa session-id common
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+no ip source-route
+!
+!
+!
+!         
+!
+!
+ip domain lookup source-interface Loopback0
+ip domain name ws.nsrc.org
+ip name-server 100.64.0.1
+ip cef
+no ipv6 source-route
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+key chain isis-key
+ key 1
+  key-string 7 020116541E165C
+!
+!
+username isplab secret 9 $9$bQoQPsgJnY.z4f$hUFPMlj4qYOV30OamlcA3ev6xzRMpGNFSe/Djp.34C2
+!
+redundancy
+!
+!
+ip tcp path-mtu-discovery
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback on Router10
+ ip address 100.68.3.253 255.255.255.255
+ ipv6 address 2001:DB8:3::3/128
+!
+interface GigabitEthernet0/0
+ description P2P Ethernet Link to Router9
+ ip address 100.68.3.5 255.255.255.254
+ no ip redirects
+ no ip proxy-arp
+ ip router isis as64503
+ load-interval 30
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address 2001:DB8:3:3::1/127
+ ipv6 nd prefix default no-advertise
+ ipv6 nd ra suppress all
+ ipv6 router isis as64503
+ isis network point-to-point 
+ isis metric 2
+ isis ipv6 metric 2
+!
+interface GigabitEthernet0/1
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!         
+interface GigabitEthernet0/2
+ description P2P Ethernet Link to Router12
+ ip address 100.68.4.1 255.255.255.254
+ no ip redirects
+ no ip proxy-arp
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address 2001:DB8:4:1::1/127
+ ipv6 nd prefix default no-advertise
+ ipv6 nd ra suppress all
+!
+interface GigabitEthernet0/3
+ description P2P Ethernet Link to Router8
+ ip address 100.68.3.2 255.255.255.254
+ no ip redirects
+ no ip proxy-arp
+ ip router isis as64503
+ load-interval 30
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address 2001:DB8:3:2::/127
+ ipv6 nd prefix default no-advertise
+ ipv6 nd ra suppress all
+ ipv6 router isis as64503
+ isis network point-to-point 
+ isis metric 2
+ isis ipv6 metric 2
+!
+router isis as64503
+ net 49.0001.0003.0003.00
+ is-type level-2-only
+ authentication mode md5 level-2
+ authentication key-chain isis-key level-2
+ metric-style wide
+ set-overload-bit on-startup wait-for-bgp
+ log-adjacency-changes
+ metric 100000
+ passive-interface Loopback0
+ !
+ address-family ipv6
+  multi-topology
+  set-overload-bit on-startup wait-for-bgp
+  metric 100000
+ exit-address-family
+!
+router bgp 64503
+ bgp log-neighbor-changes
+ bgp deterministic-med
+ no bgp default ipv4-unicast
+ neighbor rr-v4client peer-group
+ neighbor rr-v4client remote-as 64503
+ neighbor rr-v4client description IBGP with Client
+ neighbor rr-v4client password 7 121E1718071B5F491A1C
+ neighbor rr-v4client update-source Loopback0
+ neighbor rr-v6client peer-group
+ neighbor rr-v6client remote-as 64503
+ neighbor rr-v6client description IBGP with Client
+ neighbor rr-v6client password 7 070833435B194A482725
+ neighbor rr-v6client update-source Loopback0
+ neighbor 2001:DB8:1:4:: remote-as 64504
+ neighbor 2001:DB8:1:4:: description EBGP peering with Router12
+ neighbor 2001:DB8:3::1 peer-group rr-v6client
+ neighbor 2001:DB8:3::1 description IBGP with Client
+ neighbor 2001:DB8:3::2 peer-group rr-v6client
+ neighbor 2001:DB8:3::2 description IBGP with Client
+ neighbor 2001:DB8:4:1:: remote-as 64504
+ neighbor 2001:DB8:4:1:: description EBGP with Router12
+ neighbor 2001:DB8:4:1:: password 7 06242811017E3E
+ neighbor 100.68.3.251 peer-group rr-v4client
+ neighbor 100.68.3.251 description IBGP with Client
+ neighbor 100.68.3.252 peer-group rr-v4client
+ neighbor 100.68.3.252 description IBGP with Client
+ neighbor 100.68.4.0 remote-as 64504
+ neighbor 100.68.4.0 description EBGP peering with Router12
+ neighbor 100.68.4.0 password 7 123B22275F3B3B
+ !
+ address-family ipv4
+  network 100.68.3.0 mask 255.255.255.0
+  network 100.68.3.64 mask 255.255.255.240
+  neighbor rr-v4client route-reflector-client
+  neighbor rr-v4client next-hop-self
+  neighbor 100.68.3.251 activate
+  neighbor 100.68.3.252 activate
+  neighbor 100.68.4.0 activate
+  neighbor 100.68.4.0 prefix-list AS64504-v4 in
+  neighbor 100.68.4.0 prefix-list AS64503-v4 out
+  distance bgp 200 200 200
+ exit-address-family
+ !
+ address-family ipv6
+  distance bgp 200 200 200
+  network 2001:DB8:3::/48
+  network 2001:DB8:3:300::/56
+  neighbor rr-v6client route-reflector-client
+  neighbor rr-v6client next-hop-self
+  neighbor 2001:DB8:1:4:: activate
+  neighbor 2001:DB8:1:4:: prefix-list AS64504-v6 in
+  neighbor 2001:DB8:1:4:: prefix-list AS64503-v6 out
+  neighbor 2001:DB8:3::1 activate
+  neighbor 2001:DB8:3::2 activate
+  neighbor 2001:DB8:4:1:: activate
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 100.68.3.0 255.255.255.0 Null0
+ip route 100.68.3.64 255.255.255.240 Null0
+ip ssh version 2
+!
+!         
+ip prefix-list AS64503-v4 seq 5 permit 100.68.3.0/24
+ip prefix-list AS64503-v4 seq 10 deny 0.0.0.0/0 le 32
+!
+ip prefix-list AS64504-v4 seq 5 permit 100.68.4.0/24
+ip prefix-list AS64504-v4 seq 10 deny 0.0.0.0/0 le 32
+ipv6 route 2001:DB8:3:300::/56 Null0
+ipv6 route 2001:DB8:3::/48 Null0
+ipv6 ioam timestamp
+!
+!
+ipv6 prefix-list AS64503-v6 seq 5 permit 2001:DB8:3::/48
+ipv6 prefix-list AS64503-v6 seq 10 deny ::/0 le 128
+!
+ipv6 prefix-list AS64504-v6 seq 5 permit 2001:DB8:4::/48
+ipv6 prefix-list AS64504-v6 seq 10 deny ::/0 le 128
+!
+!
+!
+!
+control-plane
+!
+banner exec ^C
+^C        
+banner incoming ^C
+^C
+banner login ^C
+           BGP Deployment Workshop Lab
+         Network Startup Resource Center
+^C
+!
+line con 0
+ exec-timeout 30 0
+ transport preferred none
+ escape-character 3
+line aux 0
+ exec-timeout 30 0
+ transport preferred none
+ escape-character 3
+line vty 0 4
+ exec-timeout 30 0
+ transport preferred none
+ transport input ssh
+ escape-character 3
+!
+no scheduler allocate
+!         
+end
+
+Router10#
